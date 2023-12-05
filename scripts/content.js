@@ -1,20 +1,27 @@
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
-		if (xhttp.responseText) {
-			if (/exceeded your current quota/i.test(xhttp.responseText) || /incorrect api key/i.test(xhttp.responseText)) {
+		if (xhttp.responseText) { //If response text from PHP script is not empty:
+			if (/exceeded your current quota/i.test(xhttp.responseText) || /incorrect api key/i.test(xhttp.responseText)) { //If response text contains error message from api,
+				//display dialog which opens 'key.html' in popup if OK is clicked
 				if (window.confirm(xhttp.responseText+"\n\nEnter key now?")) window.open(chrome.runtime.getURL("key.html"),"_blank","popup");
 			}
 			else {
-			window.alert(xhttp.responseText);
-			if (Math.random()<0.2) if (window.confirm("Buy me a coffee?")) window.open(/*PAYPAL DONATE URL*/,"_blank","popup");
+				//otherwise, display alert with response text
+				window.alert(xhttp.responseText);
+				//20% probability of displaying "Buy me a coffee?" dialog which opens popup if OK is clicked
+				if (Math.random()<0.2) if (window.confirm("Buy me a coffee?")) window.open(/*PAYPAL DONATE URL*/,"_blank","popup");
 			}
 		}
 	}
 };
 
 chrome.storage.local.get(["oaikey"]).then((result) => {
-	var key = result.oaikey; if (!key) key = "EMPTY";
+	//Initialize variable 'key' with value 'oaikey' from Chromium Local Storage
+	var key = result.oaikey;
+	//If 'key' is empty, set it to "EMPTY"
+	if (!key) key = "EMPTY";
+	//Send request to PHP script with 'key' and current page url as GET parameters
 	xhttp.open("POST","https:\/\/"+/*DOMAIN*/+"\/jokemode.php?key="+key+"&url="+window.location.href,true);
 	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhttp.send(" ");

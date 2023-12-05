@@ -37,7 +37,7 @@ class Commentator
 	    $prompt = 'Impersonate a human "commentator". You comment on, and make remarks about, all kinds of things. It\'s usually a one-liner, at most a couple of short sentences, you often use emojis and every now and then you use hashtags (existing or made up). You always comment using the same language and variation that is used in the content you\'re commenting on. Your persona has the following traits: Verbosity '.$this->verbosity.' out of 10, Comment Frequency '.$this->frequency.' out of 10, Intensity '.$this->intensity.' out of 10, Sarcasm '.$this->sarcasm.' out of 10, Controversial '.$this->controversial.' out of 10, Political Leaning '.$this->politics.' out of 10 (1 meaning extreme left and 10 meaning extreme right), Sense Of Humour '.$this->humour.' out of 10.';
 	    try {
 		    $result = $client->chat()->create([
-             'model' => 'gpt-3.5-turbo-1106',
+             'model' => /* e.g. 'gpt-3.5-turbo-1106' */,
              'messages' => [['role' => 'system', 'content' => $prompt],['role' => 'system', 'content' => $mission]],
 			]);		
 			return $result['choices'][0]['message']['content'];
@@ -60,7 +60,9 @@ class Commentator
 
 if ($key = $_GET['key'])
 {
-    $content = file_get_contents($_GET["url"]);
+	//Initialize variable 'content' with content of webpage 
+	$content = file_get_contents($_GET["url"]);
+	//Remove markup and script code and tags from 'content'
     $content = preg_replace("~<br.>~i","\n",$content);
     $content = preg_replace("~<style(.|\n)*?style>~i","",$content);
     $content = preg_replace("~<script(.|\n)*?[^a]script>~i","",$content);
@@ -71,16 +73,20 @@ if ($key = $_GET['key'])
         $maxchars = 40000;
         $step = rand(0,floor(strlen($content)/$maxchars));
         $start = 0; //floor($step*$maxchars/8);
+		//Truncate 'content' if it is too long
         $content = substr($content,$start,min(strlen($content),$maxchars,strlen($content)-$start));
     
         $Jokester = new Commentator(2,5,5,8,5,5,9);
+		//Set Commentator object's api key
         $Jokester->set_oaikey($_GET['key']);
     
         $mission = "Comment on the following: ".$content;
-        $comment = $Jokester->comment($mission);
+		$comment = $Jokester->comment($mission);
+		//If comment is double quoted, remove double quotes
         if (substr($comment,0,1) == '"' & substr($comment,-1) == '"') $comment = substr($comment,1,strlen($comment)-2);
-        file_put_contents("comments/".date('Y-m-d H:i:s').".txt",$comment);
-        echo $comment;
+        //Create text file containing the comment, in the 'comments' folder (server storage)
+		file_put_contents("comments/".date('Y-m-d H:i:s').".txt",$comment);
+		echo $comment;
     }
 }
 ?>
