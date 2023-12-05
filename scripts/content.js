@@ -6,8 +6,8 @@ xhttp.onreadystatechange = function() {
 				//display dialog which opens 'key.html' in popup if OK is clicked
 				if (window.confirm(xhttp.responseText+"\n\nEnter key now?")) window.open(chrome.runtime.getURL("key.html"),"_blank","popup");
 			}
-			else {
-				//otherwise, display alert with response text
+			else { //Otherwise:
+				//display alert with response text
 				window.alert(xhttp.responseText);
 				//20% probability of displaying "Buy me a coffee?" dialog which opens popup if OK is clicked
 				if (Math.random()<0.2) if (window.confirm("Buy me a coffee?")) window.open(/*PAYPAL DONATE URL*/,"_blank","popup");
