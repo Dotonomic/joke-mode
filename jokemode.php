@@ -65,7 +65,7 @@ if ($key = $_GET['key'])
 	//Initialize variable 'content' with content of webpage 
 	$content = file_get_contents($_GET["url"]);
 	//Remove markup and script code and tags from 'content'
-    $content = preg_replace("~<br.>~i","\n",$content);
+    $content = preg_replace("~<br(.)*>~i","\n",$content);
     $content = preg_replace("~<style(.|\n)*?style>~i","",$content);
     $content = preg_replace("~<script(.|\n)*?[^a]script>~i","",$content);
     $content = preg_replace("~<noscript(.|\n)*?noscript>~i","",$content);
