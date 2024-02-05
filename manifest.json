@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Joke Mode",
-  "version": "1.2",
+  "version": "2",
   "description": "Humorous and somewhat informative comments",
   
   "content_scripts": [
