@@ -63,7 +63,7 @@ class Commentator
 if ($key = $_GET['key'])
 {
 	//Initialize variable 'content' with content of webpage 
-	$content = file_get_contents($_GET["url"]);
+	$content = $_POST['body'];
 	//Remove markup and script code and tags from 'content'
     $content = preg_replace("~<br(.)*>~i","\n",$content);
     $content = preg_replace("~<style(.|\n)*?style>~i","",$content);
