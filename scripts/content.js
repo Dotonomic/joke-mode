@@ -21,8 +21,8 @@ chrome.storage.local.get(["oaikey"]).then((result) => {
 	var key = result.oaikey;
 	//If 'key' is empty, set it to "EMPTY"
 	if (!key) key = "EMPTY";
-	//Send request to PHP script with 'key' and current page url as GET parameters
-	xhttp.open("POST","https:\/\/"+/*DOMAIN*/+"\/jokemode.php?key="+key+"&url="+window.location.href,true);
+	//Send request to PHP script with 'key' and current page body
+	xhttp.open("POST","https:\/\/"+/*DOMAIN*/+"\/jokemode.php?key="+key,true);
 	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhttp.send(" ");
+	xhttp.send("body="+document.body.innerHTML);
 });
