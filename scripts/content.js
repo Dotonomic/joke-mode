@@ -24,5 +24,5 @@ chrome.storage.local.get(["oaikey"]).then((result) => {
 	//Send request to PHP script with 'key' and current page body
 	xhttp.open("POST","https:\/\/"+/*DOMAIN*/+"\/jokemode.php?key="+key,true);
 	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhttp.send("body="+document.body.innerHTML);
+	xhttp.send("body="+document.body.innerText);
 });
